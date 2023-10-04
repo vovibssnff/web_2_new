@@ -1,0 +1,9 @@
+services:
+  serv:
+    image: quay.io/wildfly/wildfly
+    container_name: wildfly
+    restart: always
+    volumes:
+      - ./web_2.war:/opt/jboss/wildfly/standalone/deployments/web_2.war
+    ports:
+      - "8080:8080"

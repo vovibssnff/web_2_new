@@ -1,0 +1,96 @@
+.all {
+    margin: 0.5%;
+    padding: 0.5%;
+    height: fit-content;
+}
+h3 {
+    opacity: 55%;
+    color: rgba(255, 255, 255, 0.5);
+}
+#header {
+    background-image: url('../images/SL-093020-35920-01.jpg');
+    background-size: 100%;
+    position: fixed;
+    width: 97%;
+    z-index: 100;
+}
+#header #avatar {
+    max-width: 100%;
+}
+.header-container {
+    overflow: auto;
+    box-shadow: 0 -20px 100px black;
+    border: 3px solid #ff2f55;
+    border-radius: 25px;
+}
+.header-content {
+    width: 48%;
+    display: inline-block;
+    /*border: 1px;*/
+    padding: 0.5%;
+    vertical-align: middle;
+}
+.header-content > #avatar {
+    width: 10%;
+    /*height: 5%;*/
+    border-radius: 50%;
+}
+#student_info {
+    text-align: right;
+}
+#student_info > h3 {
+    opacity: 55%;
+    color: #ff2f55;
+    font-family: "Bree Serif", serif;
+    font-size: 18px;
+    float: right;
+}
+
+.form-container {
+    /* width: 50%;*/
+    text-align: center;
+    /*border: 2px solid black;*/
+}
+.form-content {
+    width: 80%;
+    display: inline-block;
+    margin: 0.5%;
+    padding: 10% 0.5% 0.5%;
+    align-items: center;
+}
+.form-subcontent {
+    position: relative;
+    top: 20%;
+    margin-top: 10%;
+    white-space: nowrap;
+    width: 70%;
+    display: inline-block;
+    /*border: 2px solid red;*/
+}
+.form-content #y_field {
+    width: 95%;
+    border-radius: 10px;
+}
+#form {
+    width: 45%;
+    margin: 0.5%;
+    display: inline-block;
+    accent-color: #ff2f55;
+    padding: 10% 0.5% 0.5%;
+}
+#plot {
+    height: 30%;
+    width: 45%;
+    margin: 0.5%;
+    display: inline-block;
+    text-align: center;
+    padding: 10% 0.5% 0.5%;
+    /*border: 2px solid black;*/
+}
+#form #submit {
+    opacity: 92%;
+    background-color: #ff2f55;
+    border: 2px solid grey;
+    border-radius: 10px;
+    margin: 10%;
+}

@@ -16,7 +16,7 @@ import java.io.IOException;
 public class ControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CustomResponseWrapper wrapper = new CustomResponseWrapper(resp);
-        //req.getRequestDispatcher("/AreaCheckServlet").include(req, wrapper);
+        req.getRequestDispatcher("/AreaCheckServlet").include(req, wrapper);
 
 //        String resultString = wrapper.getRes().getResult().toString();
 //        String queryTimeString = wrapper.getRes().getQueryTime().toString();
@@ -24,11 +24,18 @@ public class ControllerServlet extends HttpServlet {
 //        resp.getWriter().write(queryTimeString + ", " + resultString);
 //        resp.getWriter().close();
 //        resp.getWriter().flush();
-//        resp.getWriter().close();
+//        getServletContext().getRequestDispatcher("/result.jsp").forward(req, resp);
+        req.getRequestDispatcher("result.jsp").forward(req, resp);
 
-        String resultString = "hi_cutie, omg_my_app_works";
-        resp.setContentType("text/plain");
-        resp.getWriter().print(resultString);
+
+
+////        resp.getWriter().close();
+//
+//        String resultString = "hi_cutie, omg_my_app_works";
+//        resp.setHeader("Access-Control-Allow-Origin", "*");
+//        resp.setHeader("Access-Control-Allow-Credentials", "true");
+//        resp.setContentType("text/plain");
+//        resp.getWriter().print(resultString);
 //        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

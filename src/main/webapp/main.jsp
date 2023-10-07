@@ -1,3 +1,5 @@
+<%@ page import="storage.Result" %>
+<%@ page import="storage.Results" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 <html>
@@ -18,7 +20,7 @@
             <h3>Бессонов Владимир Юрьевич<br>P3212<br>2238</h3>
         </div>
     </div>
-    <form id="form" class="form-container" onsubmit="sendRequest(); return false">
+    <form id="form" class="form-container" action="${pageContext.request.contextPath}/ControllerServlet" method="get">
         <div class="form-content">
 
             <!-- X value (integer from -5 to 3) -->
@@ -121,7 +123,7 @@
         </div>
     </div>
     <div id="result-table-container" align="center">
-        <script src="js/main.js"></script>
+<%--        <script src="js/main.js"></script>--%>
         <table id="result-table">
             <thead>
             <tr>
@@ -133,7 +135,8 @@
                 <th>Result</th>
             </tr>
             </thead>
-            <tbody align="center"></tbody>
+            <tbody align="center">
+            </tbody>
         </table>
     </div>
 </div>

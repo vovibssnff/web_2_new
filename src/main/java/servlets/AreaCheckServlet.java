@@ -3,12 +3,10 @@ package servlets;
 import exceptions.IncorrectDataException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
+import jakarta.servlet.http.*;
 import storage.CustomResponseWrapper;
 import storage.Result;
+import storage.Results;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -30,7 +28,18 @@ public class AreaCheckServlet extends HttpServlet {
                 Result result = new Result(x, y, r, checkArea(x, y, r), LocalTime.now()); //TODO время
                 CustomResponseWrapper wrapper = (CustomResponseWrapper) resp;
                 wrapper.setRes(result);
-                resp = wrapper;
+                HttpSession session = req.getSession();
+                Results results = null;
+                try {
+                    results = (Results) session.getAttribute("results");
+                    results.addResult(result);
+                    session.setAttribute("results", results);
+                } catch (NullPointerException e) {
+                    results = new Results();
+                    results.addResult(result);
+                    session.setAttribute("results", results);
+                }
+
 //                req.getRequestDispatcher("/main.jsp").include(req, wrapper);
             }
         } catch (IncorrectDataException e) {
@@ -43,7 +52,9 @@ public class AreaCheckServlet extends HttpServlet {
     private boolean checkArea(int x, int y, int r) {
         // Perform the area calculation or other logic and return the result as a String
         // Example logic:
-        if ((x >= 0 && x <= r) && (y >= 0 && y <= r / 2)) {
+        if ((x>=-r && x<=0 && y>=0 && y<=r) ||
+                (x*x+y*y<=(r*r)/4 && x<0 && y<0) ||
+                (y>=x-r && x>=0 && y<=0)) {
             return true;
         } else {
             return false;

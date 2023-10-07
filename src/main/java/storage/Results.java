@@ -17,7 +17,7 @@ public class Results {
     }
 
     public void addResult(Result result) {
-        results.addFirst(result);
+        results.addLast(result);
     }
 
     public SimpleDateFormat getSimpleDateFormat() {

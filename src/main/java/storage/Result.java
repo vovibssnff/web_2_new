@@ -1,15 +1,16 @@
 package storage;
 
+import java.time.LocalTime;
 import java.util.Date;
 
 public class Result {
     private double x;
     private double y;
     private double r;
-    private boolean result;
-    private Date queryTime;
+    private Boolean result;
+    private LocalTime queryTime;
 
-    public Result(double x, double y, double r, boolean result, Date queryTime) {
+    public Result(double x, double y, double r, boolean result, LocalTime queryTime) {
         this.x = x;
         this.y = y;
         this.r = r;
@@ -29,11 +30,11 @@ public class Result {
         return r;
     }
 
-    public boolean getResult() {
+    public Boolean getResult() {
         return result;
     }
 
-    public Date getQueryTime() {
+    public LocalTime getQueryTime() {
         return queryTime;
     }
 }

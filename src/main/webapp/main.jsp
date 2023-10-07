@@ -3,9 +3,10 @@
 <html>
 <head>
     <title>lab_1</title>
-    <meta charset="UTF-8"></meta>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8"></meta>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ></script>
 </head>
 <body>
 <div class="all">
@@ -17,7 +18,7 @@
             <h3>Бессонов Владимир Юрьевич<br>P3212<br>2238</h3>
         </div>
     </div>
-    <form id="form" class="form-container" action="ControllerServlet" method="get">
+    <form id="form" class="form-container" onsubmit="sendRequest(); return false">
         <div class="form-content">
 
             <!-- X value (integer from -5 to 3) -->
@@ -120,6 +121,7 @@
         </div>
     </div>
     <div id="result-table-container" align="center">
+        <script src="js/main.js"></script>
         <table id="result-table">
             <thead>
             <tr>

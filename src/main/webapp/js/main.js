@@ -14,32 +14,59 @@ yField.addEventListener("input", (event) => {
     }
 });
 
-$(document).ready(function() {
-    $('#form').submit(function(event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        // Get values from form elements
-        var x = $('#x').val();
-        var y = $('#y').val();
-        var r = $('#r').val();
-
-        // Send an AJAX GET request to the servlet
-        $.get('ControllerServlet', { val_x: x, val_y: y, val_r: r }, function(data) {
-            const t1 = performance.now();
-
-            var now = new Date();
-            var execution_time = t1-t0;
-            var newData = { x: x, y: y, r: r, time: now, execution_time: execution_time, result: data };
-            console.log(x, y, r);
-            var newRow = '<tr>' +
-                '<td>' + newData.x + '</td>' +
-                '<td>' + newData.y + '</td>' +
-                '<td>' + newData.r + '</td>' +
-                '<td>' + newData.time + '</td>' +
-                '<td>' + newData.execution_time + '</td>' +
-                '<td>' + newData.result + '</td>' +
+function sendRequest() {
+    let val_x = $('#x').val();
+    let val_y = $('#y').val();
+    let val_r = $('#r').val();
+    $.ajax({
+        url: 'ControllerServlet',
+        method: 'GET',
+        data: {
+            val_x: val_x,
+            val_y: val_y,
+            val_r: val_r
+        },
+        success: function (result) {
+            let newRow = '<tr>' +
+                '<td>' + val_x + '</td>' +
+                '<td>' + val_y + '</td>' +
+                '<td>' + val_r + '</td>' +
+                '<td>' + 'i' + '</td>' +
+                '<td>' + 'wanna' + '</td>' +
+                '<td>' + 'pizza' + '</td>' +
                 '</tr>';
             $('#result-table tbody').append(newRow);
-        });
+        },
+        error: function (jqXHR, exception) {
+            console.log('Error occured!!');
+        }
     });
-});
+}
+
+// $(document).ready(function () {
+//     $('#form').submit(function () {
+//         let x = $('#x').val();
+//         let y = $('#y').val();
+//         let r = $('#r').val();
+//         $.get('ControllerServlet', {
+//             val_x: x,
+//             val_y: y,
+//             val_r: r
+//         }, function (result) {
+//             let res = result.split(", ");
+//             let now = new Date();
+//             let newData = { x: x, y: y, r: r, time: now, execution_time: res[0], result: res[1] };
+//             console.log(x, y, r);
+//             let newRow = '<tr>' +
+//                 '<td>' + newData.x + '</td>' +
+//                 '<td>' + newData.y + '</td>' +
+//                 '<td>' + newData.r + '</td>' +
+//                 '<td>' + newData.time + '</td>' +
+//                 '<td>' + newData.execution_time + '</td>' +
+//                 '<td>' + newData.result + '</td>' +
+//                 '</tr>';
+//             $('#result-table tbody').append(newRow);
+//         });
+//     });
+//
+// });

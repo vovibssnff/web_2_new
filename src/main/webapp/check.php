@@ -4,9 +4,9 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 
-$val_x = $_GET['val_x'] ?? null;
-$val_y = $_GET['val_y'] ?? null;
-$val_r = $_GET['val_r'] ?? null;
+$val_x = isset($_GET['val_x']) ? $_GET['val_x'] : null;
+$val_y = isset($_GET['val_y']) ? $_GET['val_y'] : null;
+$val_r = isset($_GET['val_r']) ? $_GET['val_r'] : null;
 
 if (!preg_match('/^-?\d+$/', $val_x)) {
     header('Content-Type: text/plain');

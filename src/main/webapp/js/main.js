@@ -1,75 +1,196 @@
-// const yField = document.getElementById("y_field");
-//
-// yField.addEventListener("input", (event) => {
-//     const yValue = parseInt(yField.value);
-//     console.log("Y is " + yValue);
-//     if (isNaN(yValue)||yValue.toString()==="") {
-//         yField.setCustomValidity("Y must be a valid number");
-//     } else {
-//         if (yValue<-3||yValue>5) {
-//             yField.setCustomValidity("Y value should be in range [-3, 5]")
-//         } else {
-//             yField.setCustomValidity("");
-//         }
-//     }
-// });
-
-// function sendRequest() {
-//     let val_x = $('#x').val();
-//     let val_y = $('#y').val();
-//     let val_r = $('#r').val();
-//     $.ajax({
-//         url: 'ControllerServlet',
-//         method: 'GET',
-//         data: {
-//             val_x: val_x,
-//             val_y: val_y,
-//             val_r: val_r
-//         },
-//         success: function (result) {
-//             // let newRow = '<tr>' +
-//             //     '<td>' + val_x + '</td>' +
-//             //     '<td>' + val_y + '</td>' +
-//             //     '<td>' + val_r + '</td>' +
-//             //     '<td>' + 'i' + '</td>' +
-//             //     '<td>' + 'wanna' + '</td>' +
-//             //     '<td>' + 'pizza' + '</td>' +
-//             //     '</tr>';
-//             // $('#result-table tbody').append(newRow);
-//         },
-//         error: function (jqXHR, exception) {
-//             console.log('Error occured!!');
-//         }
-//     });
-// }
-
-$(document).ready(function () {
-    $('#form').submit(function () {
-        let x = $('#x').val();
-        let y = $('#y').val();
-        let r = $('#r').val();
-        console.log(x, y, r);
-        $.get('ControllerServlet', {
-            val_x: x,
-            val_y: y,
-            val_r: r
-        }, function (result) {
-            console.log('oh shit omg')
-            console.log(result);
-            let res = result.split(", ");
-            let now = new Date();
-            let newData = { x: x, y: y, r: r, time: now, execution_time: res[0], result: res[1] };
-            console.log(x, y, r);
-            let newRow = '<tr>' +
-                '<td>' + newData.x + '</td>' +
-                '<td>' + newData.y + '</td>' +
-                '<td>' + newData.r + '</td>' +
-                '<td>' + newData.time + '</td>' +
-                '<td>' + newData.execution_time + '</td>' +
-                '<td>' + newData.result + '</td>' +
-                '</tr>';
-            $('#result-table tbody').append(newRow);
-        });
-    });
+document.addEventListener('click', function (e) {
+    // Check if the clicked element or any of its ancestors have the class "svg-wrapper"
 
 });
+
+let centerX = 225;  //в этом мест x=0 с точки зрения математических координат
+let centerY = 225;  //в этом мест y=0 с точки зрения математических координат
+let R = 200;
+let canvas = document.getElementById("canvas");
+let context = canvas.getContext("2d");
+context.font = "12px Verdana";
+
+function drawPoint(x, y, delta = 2) {
+    context.rect(x - delta / 2, y - delta / 2, delta, delta);
+}
+
+function get_r_() {
+    return document.getElementById("r").value;
+
+}
+
+function drawPointForJsp(mathX, mathY, delta = 2) {
+    let r_ = get_r_();
+
+    let x = mathX * R / r_ + centerX;
+    let y = centerY - mathY * R / r_;
+
+    context.beginPath();
+    drawPoint(x, y, delta);
+    context.strokeStyle = "red";
+    context.stroke();
+}
+
+function drawTextWithDeltaX(text, x, y, delta = 4) {
+    //смещение по оси х для надписей на оси y
+    context.fillText(text, x + delta, y);
+    drawPoint(x, y);
+}
+
+function drawTextWithDeltaY(text, x, y, delta = 4) {
+    //смещение по оси y для надписей на оси x
+    context.fillText(text, x, y - delta);
+    drawPoint(x, y);
+}
+
+function drawArrow(x, y, arrowDelta, direction) {
+    context.moveTo(x, y);
+    if (direction === "right")
+        context.lineTo(x - arrowDelta, y - arrowDelta);
+    else
+        context.lineTo(x - arrowDelta, y + arrowDelta);
+
+    context.moveTo(x, y);
+    if (direction === "right")
+        context.lineTo(x - arrowDelta, y + arrowDelta);
+    else
+        context.lineTo(x + arrowDelta, y + arrowDelta);
+}
+
+function drawAxes(radius, delta) {
+    let arrowDelta = 4;
+    context.beginPath();
+
+    drawPoint(centerX, centerY, 4);
+
+    context.moveTo(centerX - radius - delta, centerY);
+    context.lineTo(centerX + radius + delta, centerY); //OX
+
+    drawArrow(centerX + radius + delta, centerY, arrowDelta, "right");
+    context.fillText("X", centerX + radius + delta, centerY);
+
+    context.moveTo(centerX, centerY + radius + delta);
+    context.lineTo(centerX, centerY - radius - delta); //OY
+    drawArrow(centerX, centerY - radius - delta, arrowDelta, "up");
+    context.fillText("Y", centerX, centerY - radius - delta);
+
+    //OX
+    drawTextWithDeltaY("-R", centerX - radius, centerY);
+    drawTextWithDeltaY("-R/2", centerX - radius / 2, centerY);
+    drawTextWithDeltaY("R/2", centerX + radius / 2, centerY);
+    drawTextWithDeltaY("R", centerX + radius, centerY);
+
+    //OY
+    drawTextWithDeltaX("-R", centerX, centerY + radius);
+    drawTextWithDeltaX("-R/2", centerX, centerY + radius / 2);
+    drawTextWithDeltaX("R/2", centerX, centerY - radius / 2);
+    drawTextWithDeltaX("R", centerX, centerY - radius);
+
+    context.stroke();
+}
+
+function drawThirdQuarter(radius) {
+    //четверть окружности по радиусу
+    context.moveTo(centerX, centerY);  //(0;0)
+    context.arc(centerX, centerY, radius,
+        Math.PI / 2, Math.PI,
+        false);
+    context.fill();
+}
+
+function drawFourthQuarter(height, width) {
+    //треугольник по катетам
+    context.moveTo(centerX, centerY);  //(0;0)
+    context.lineTo(centerX + width, centerY); //(r;0)
+    context.lineTo(centerX, centerY + height);  //(0;-r)
+    context.lineTo(centerX, centerY);  //(0;0)
+}
+
+function drawSecondQuarter(height, width) {
+
+    //square
+
+    context.moveTo(centerX, centerY); //(0;0)
+
+    context.lineTo(centerX, centerY - height); //(0;r)
+    context.lineTo(centerX - width, centerY - height); //(-r;r)
+    context.lineTo(centerX-width, centerY); //(-r;0)
+    context.lineTo(centerX, centerY); //(0;0)
+}
+
+function drawPlot() {
+    context.beginPath();
+
+    drawSecondQuarter(R, R);
+    drawThirdQuarter(R / 2);
+    drawFourthQuarter(R, R);
+
+
+
+    context.closePath();
+    context.strokeStyle = "blue";
+    context.fillStyle = "blue";
+    context.fill();
+    context.stroke();
+    context.strokeStyle = "black";
+    context.fillStyle = "black";
+    drawAxes(R, 14);
+}
+
+drawPlot();
+
+canvas.onclick = (event) => {
+    let x = event.pageX - event.target.offsetLeft;
+    let y = event.pageY - event.target.offsetTop;
+
+    let mathX = x - centerX;
+    let mathY = centerY - y;
+
+    let r_ = get_r_();
+    if (!r_) {
+        alert("Set r value, please");
+        return;
+    }
+
+    let x_ = mathX / R * r_;
+    let y_ = mathY / R * r_;
+
+    // context.beginPath();
+    // drawPoint(x, y);
+    // context.strokeStyle = "red";
+    // context.stroke();
+
+    console.log(Math.round(x_), Math.round(y_), r_);
+
+    document.getElementById('x').value = Math.round(x_);
+    document.getElementById('y').value = Math.round(y_);
+
+
+    // location.href = `/web_2/ControllerServlet?val_x=${Math.round(x_)}&val_y=${Math.round(y_)}&val_r=${r_}`;
+
+    // if (event.target.closest('.svg-wrapper')) {
+    //     console.log("pressed");
+    //     let r = $('#r').val(); // Get the value of the input with id 'r'
+    //     if (r) {
+    //         const position = $('.svg-wrapper').offset();
+    //         const rowX = e.pageX - position.left;
+    //         const rowY = e.pageY - position.top;
+    //
+    //         // Calculate x and y values based on your logic
+    //         const x = Math.round(((r / 50) * (400 / 2 - rowX) * -1) / 2 - 0.2 * r);
+    //         const y = Math.round(((r / 50) * (400 / 2 - rowY)) / 2 + 0.2 * r);
+    //
+    //         // Set the values of the inputs with id 'x' and 'y'
+    //
+    //
+    //     } else {
+    //         alert('Set r value, please');
+    //     }
+    // }
+
+}
+
+let btn = document.getElementById("submit");
+btn.onclick = () => {
+    location.href = `/web_2/ControllerServlet?val_x=${document.getElementById('x').value}&val_y=${document.getElementById('y').value}&val_r=${document.getElementById('r').value}`;
+};

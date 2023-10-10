@@ -1,40 +1,46 @@
 package storage;
 
 import java.time.LocalTime;
-import java.util.Date;
 
 public class Result {
-    private double x;
-    private double y;
-    private double r;
+    private int x;
+    private int y;
+    private int r;
+    private LocalTime currentTime;
+    private long executionTime;
     private Boolean result;
-    private LocalTime queryTime;
 
-    public Result(double x, double y, double r, boolean result, LocalTime queryTime) {
+    public Result(int x, int y, int r, LocalTime currentTime, long startTimestamp, boolean result) {
         this.x = x;
         this.y = y;
         this.r = r;
+        this.currentTime = currentTime;
+        this.executionTime = startTimestamp;
         this.result = result;
-        this.queryTime = queryTime;
     }
 
-    public double getX() {
+    public int getX() {
         return x;
     }
 
-    public double getY() {
+    public int getY() {
         return y;
     }
 
-    public double getR() {
+    public int getR() {
         return r;
+    }
+
+    public LocalTime getCurrentTime() {return currentTime;}
+
+    public long getExecutionTime() {
+        return executionTime;
     }
 
     public Boolean getResult() {
         return result;
     }
 
-    public LocalTime getQueryTime() {
-        return queryTime;
-    }
+    public void setExecutionTime(long executionTime) {this.executionTime=executionTime;}
+
 }

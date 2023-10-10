@@ -1,6 +1,7 @@
 package servlets;
 
 import exceptions.IncorrectDataException;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -15,6 +16,7 @@ import java.time.LocalTime;
 public class AreaCheckServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        long start = System.currentTimeMillis();
         // Retrieve the values of x, y, and r from the req
         int x = Integer.parseInt(req.getParameter("val_x"));
         int y = Integer.parseInt(req.getParameter("val_y"));
@@ -25,26 +27,25 @@ public class AreaCheckServlet extends HttpServlet {
             if (validate((char) x, x, -5, 3) &&
             validate((char) y, y, -5, 5) &&
             validate((char) r, r, 1, 4)) {
-                Result result = new Result(x, y, r, checkArea(x, y, r), LocalTime.now()); //TODO время
+                boolean res = checkArea(x, y, r);
+                Result result = new Result(x, y, r, LocalTime.now(), start, res);
                 CustomResponseWrapper wrapper = (CustomResponseWrapper) resp;
                 wrapper.setRes(result);
-                HttpSession session = req.getSession();
                 Results results = null;
                 try {
-                    results = (Results) session.getAttribute("results");
+                    results = (Results) req.getServletContext().getAttribute("results");
                     results.addResult(result);
-                    session.setAttribute("results", results);
+                    req.getServletContext().setAttribute("results", results);
                 } catch (NullPointerException e) {
                     results = new Results();
                     results.addResult(result);
-                    session.setAttribute("results", results);
+                    req.getServletContext().setAttribute("results", results);
                 }
 
 //                req.getRequestDispatcher("/main.jsp").include(req, wrapper);
             }
         } catch (IncorrectDataException e) {
-            req.setAttribute("error_message", e.getMessage());
-            getServletContext().getRequestDispatcher("/error.jsp").forward(req, resp);
+            req.getServletContext().setAttribute("error_message", e.getMessage());
         }
     }
 
@@ -61,7 +62,7 @@ public class AreaCheckServlet extends HttpServlet {
         }
     }
     private boolean validate(char var, Integer val, int lowerVal, int higherVal) throws IncorrectDataException {
-        if (!val.equals(null)&&val>=lowerVal&&val<=higherVal) { return true; }
+        if (val != null &&val>=lowerVal&&val<=higherVal) { return true; }
         throw new IncorrectDataException("Invalid " + var + " value");
     }
 }

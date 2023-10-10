@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import storage.CustomResponseWrapper;
 import storage.Result;
+import storage.Results;
 
 import java.io.IOException;
 
@@ -17,25 +18,14 @@ public class ControllerServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         CustomResponseWrapper wrapper = new CustomResponseWrapper(resp);
         req.getRequestDispatcher("/AreaCheckServlet").include(req, wrapper);
+        if ("".equals(req.getParameter("error_message"))) {
+            Result result = ((Results) req.getServletContext().getAttribute("results")).getLastResult();
+            long stop = System.currentTimeMillis();
+            result.setExecutionTime(stop - result.getExecutionTime());
+            req.getRequestDispatcher("main.jsp").forward(req, resp);
+        } else {
 
-//        String resultString = wrapper.getRes().getResult().toString();
-//        String queryTimeString = wrapper.getRes().getQueryTime().toString();
-//        resp.setContentType("text/plain");
-//        resp.getWriter().write(queryTimeString + ", " + resultString);
-//        resp.getWriter().close();
-//        resp.getWriter().flush();
-//        getServletContext().getRequestDispatcher("/result.jsp").forward(req, resp);
-        req.getRequestDispatcher("result.jsp").forward(req, resp);
-
-
-
-////        resp.getWriter().close();
-//
-//        String resultString = "hi_cutie, omg_my_app_works";
-//        resp.setHeader("Access-Control-Allow-Origin", "*");
-//        resp.setHeader("Access-Control-Allow-Credentials", "true");
-//        resp.setContentType("text/plain");
-//        resp.getWriter().print(resultString);
-//        resp.setStatus(HttpServletResponse.SC_OK);
+            req.getRequestDispatcher("main.jsp").forward(req, resp);
+        }
     }
 }

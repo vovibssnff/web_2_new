@@ -5,11 +5,9 @@ import java.util.ArrayDeque;
 
 public class Results {
     private ArrayDeque<Result> results = null;
-    private final SimpleDateFormat simpleDateFormat;
 
     public Results() {
         results = new ArrayDeque<>();
-        simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
     }
 
     public ArrayDeque<Result> getResults() {
@@ -20,7 +18,6 @@ public class Results {
         results.addLast(result);
     }
 
-    public SimpleDateFormat getSimpleDateFormat() {
-        return simpleDateFormat;
-    }
+    public Result getLastResult() {return results.getLast();}
+
 }

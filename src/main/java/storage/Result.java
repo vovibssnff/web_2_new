@@ -3,19 +3,17 @@ package storage;
 import java.time.LocalTime;
 
 public class Result {
-    private int x;
-    private int y;
-    private int r;
-    private LocalTime currentTime;
-    private long executionTime;
-    private Boolean result;
+    private final int x;
+    private final int y;
+    private final int r;
+    private final LocalTime currentTime;
+    private final Boolean result;
 
-    public Result(int x, int y, int r, LocalTime currentTime, long startTimestamp, boolean result) {
+    public Result(int x, int y, int r, LocalTime currentTime, boolean result) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.currentTime = currentTime;
-        this.executionTime = startTimestamp;
         this.result = result;
     }
 
@@ -33,14 +31,8 @@ public class Result {
 
     public LocalTime getCurrentTime() {return currentTime;}
 
-    public long getExecutionTime() {
-        return executionTime;
-    }
-
     public Boolean getResult() {
         return result;
     }
-
-    public void setExecutionTime(long executionTime) {this.executionTime=executionTime;}
 
 }

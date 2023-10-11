@@ -1,8 +1,3 @@
-document.addEventListener('click', function (e) {
-    // Check if the clicked element or any of its ancestors have the class "svg-wrapper"
-
-});
-
 let centerX = 225;  //в этом мест x=0 с точки зрения математических координат
 let centerY = 225;  //в этом мест y=0 с точки зрения математических координат
 let R = 200;
@@ -90,7 +85,7 @@ function drawAxes(radius, delta) {
 }
 
 function drawThirdQuarter(radius) {
-    //четверть окружности по радиусу
+
     context.moveTo(centerX, centerY);  //(0;0)
     context.arc(centerX, centerY, radius,
         Math.PI / 2, Math.PI,
@@ -99,7 +94,7 @@ function drawThirdQuarter(radius) {
 }
 
 function drawFourthQuarter(height, width) {
-    //треугольник по катетам
+
     context.moveTo(centerX, centerY);  //(0;0)
     context.lineTo(centerX + width, centerY); //(r;0)
     context.lineTo(centerX, centerY + height);  //(0;-r)
@@ -107,8 +102,6 @@ function drawFourthQuarter(height, width) {
 }
 
 function drawSecondQuarter(height, width) {
-
-    //square
 
     context.moveTo(centerX, centerY); //(0;0)
 
@@ -124,8 +117,6 @@ function drawPlot() {
     drawSecondQuarter(R, R);
     drawThirdQuarter(R / 2);
     drawFourthQuarter(R, R);
-
-
 
     context.closePath();
     context.strokeStyle = "blue";
@@ -155,39 +146,10 @@ canvas.onclick = (event) => {
     let x_ = mathX / R * r_;
     let y_ = mathY / R * r_;
 
-    // context.beginPath();
-    // drawPoint(x, y);
-    // context.strokeStyle = "red";
-    // context.stroke();
-
     console.log(Math.round(x_), Math.round(y_), r_);
 
     document.getElementById('x').value = Math.round(x_);
     document.getElementById('y').value = Math.round(y_);
-
-
-    // location.href = `/web_2/ControllerServlet?val_x=${Math.round(x_)}&val_y=${Math.round(y_)}&val_r=${r_}`;
-
-    // if (event.target.closest('.svg-wrapper')) {
-    //     console.log("pressed");
-    //     let r = $('#r').val(); // Get the value of the input with id 'r'
-    //     if (r) {
-    //         const position = $('.svg-wrapper').offset();
-    //         const rowX = e.pageX - position.left;
-    //         const rowY = e.pageY - position.top;
-    //
-    //         // Calculate x and y values based on your logic
-    //         const x = Math.round(((r / 50) * (400 / 2 - rowX) * -1) / 2 - 0.2 * r);
-    //         const y = Math.round(((r / 50) * (400 / 2 - rowY)) / 2 + 0.2 * r);
-    //
-    //         // Set the values of the inputs with id 'x' and 'y'
-    //
-    //
-    //     } else {
-    //         alert('Set r value, please');
-    //     }
-    // }
-
 }
 
 let btn = document.getElementById("submit");
